@@ -56,8 +56,8 @@ class Pedido {
     }
 }
 
-// Creación de un pedido
-
+// Bienvenida y creación de un pedido
+alert("___________________________________\n\n¡Bienvenidos a Santo Guacamole!\n___________________________________")
 const direccionPedido = prompt("¿Cuál es tu dirección?");
 let formaDePagoPedido = prompt(
     "¿Cómo abonás el pedido? \n 1 - Tarjeta de débito \n 2 - Tarjeta de crédito \n 3 - Efectivo"
@@ -70,23 +70,49 @@ while (formaDePagoPedido < 1 || formaDePagoPedido > 3) {
 }
 const pedido = new Pedido(direccionPedido, formaDePagoPedido);
 
-// Agregar productos
-let opcion = 0;
-while (opcion !== 4) {
-    alert(
-        "Elige un producto:\n\n 1. Burrito - $2200 \n 2. Totopos - $1600 \n 3. Tacos - $1900 \n 4. Terminar pedido"
-    );
+// Creación de productos
 
-    opcion = parseInt(prompt("Ingrese su opción:"));
+let burrito = new Producto("Burrito", 2200);
+let totopos = new Producto("Totopos", 1600);
+let tacos = new Producto("Tacos", 1900);
+
+// Creacion de Array de Productos
+
+let productosTotales = [burrito, totopos, tacos];
+
+function mostrarProductos(arrayProductos){
+    let productosPrecios = '';
+    let i = 0;
+    arrayProductos.forEach((producto) => {
+        i++;
+        productosPrecios += `${i}. ${producto.nombre} - $${producto.precio} \n`;
+    });
+    alert(`Nuestras comidas son:\n ${productosPrecios}`);
+
+}
+
+// Mostrar productos
+
+mostrarProductos(productosTotales);
+
+// Variable contadora dinamica para cantidad de productos del Array
+
+cantidadDeProductos = productosTotales.length;
+
+// Pedido de productos
+
+let opcion = 0;
+while (opcion !== cantidadDeProductos+1) {
+    opcion = parseInt(prompt(`Ingrese su opción. Si quiere finalizar su pedido, ingrese ${cantidadDeProductos+1}:`));
     switch (opcion) {
         case 1:
-            pedido.agregarProducto(new Producto("Burrito", 2200));
+            pedido.agregarProducto(productosTotales[0]);
             break;
         case 2:
-            pedido.agregarProducto(new Producto("Totopos", 1600));
+            pedido.agregarProducto(productosTotales[1]);
             break;
         case 3:
-            pedido.agregarProducto(new Producto("Tacos", 1900));
+            pedido.agregarProducto(productosTotales[2]);
             break;
         case 4:
             break;
@@ -103,6 +129,12 @@ let verificacionPago = parseInt(
 while (verificacionPago < 1 || verificacionPago > 2) {
     alert("Error, elija una opción válida");
     verificacionPago = parseInt(prompt("1 - Si, pagué \n 2 - No, no pagué"));
+}
+
+if(verificacionPago === 1){
+    alert("Gracias por su compra!")
+}else if (verificacionPago === 2){
+    alert("Por favor, abone en el local antes de retirarse.")
 }
 
 // Mostrar el resumen del pedido
